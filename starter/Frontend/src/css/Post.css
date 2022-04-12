@@ -1,0 +1,83 @@
+.posts-view {
+  display: block;
+}
+
+.posts-list {
+  flex-basis: 75%;
+  text-align: left;
+}
+
+.Post-holder {
+  padding: 10px 20px;
+  border: 3px black solid;
+  border-style: double;
+  text-align: left;
+  margin: 20px 7px;
+}
+
+.Post-holder h2{
+  font-size: 21px;
+}
+
+.Reply-holder {
+  padding: 10px 20px;
+  border: 1px grey solid;
+  text-align: left;
+  margin: 0 7px;
+}
+
+.Post-status {
+  display: flex;
+  flex-direction: row;
+  height: 30px;
+  width: 200px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Post {
+  font-size: 21px;
+  width: 100%;
+}
+
+.Reply {
+  font-size: 16px;
+  width: 100%;
+}
+
+.answer-holder {
+  font-size: 25px;
+  height: 25px;
+  margin: 5px 0px;
+}
+
+.show-answer {
+  width: 100px;
+  margin-top: 5px;
+  background-color: dodgerblue;
+  color: white;
+  padding: 3px 5px;
+  margin-left: 0px !important;
+}
+
+span.page-num {
+  margin-top: 5px;
+  margin-left: 49%;
+  padding-bottom: 50px;
+  /* color: blue; */
+  font-weight: bolder;
+  text-decoration: underline;
+  font-size: 16px;
+}
+
+span.page-num.active {
+  color: blue;
+}
+
+img.category {
+  width: 30px;
+}
+
+img.delete {
+  width: 20px;
+}

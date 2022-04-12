@@ -1,0 +1,30 @@
+    form {
+        display: inline-block;
+    }
+    .searchBar {
+        width: 75%;
+        font-size: 16px;
+        padding: 12px 20px;
+        margin: 20px 8px;
+        box-sizing: border-box;
+        float: left;
+    }
+    .button {
+        width: 10%;
+        background-color: #e7e7e7;
+        border: none;
+        border-radius: 4px;
+        color: black;
+        padding: 12px 8px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 20px 2px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+    }
+    .button:hover {
+        background-color: #555555;
+        color: white;
+    }
