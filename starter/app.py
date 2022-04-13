@@ -99,6 +99,7 @@ def create_app(test_config=None):
             abort(404)
 
         return jsonify({'success':True,
+        'post_id': post.id,
         'subject': post.subject,
         'content': post.content,
         'replies':formatted_replies[start:end],

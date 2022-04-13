@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
-
 import '../css/FormView.css';
 
 class FormView extends Component {
@@ -29,7 +28,7 @@ class FormView extends Component {
       },
       crossDomain: true,
       success: (result) => {
-        document.getElementById("create-post-form").reset();
+        this.props.history.push('/posts')
       },
       error: (error) => {
         alert('Unable to create post. Please try your request again')

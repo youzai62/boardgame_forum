@@ -10,6 +10,7 @@ class Post extends Component {
         post_id: 0,
         subject:'',
         content:'',
+        reply_content:'',
         replies: [],
         page: 1,
         totalReplies: 0
@@ -27,6 +28,7 @@ class Post extends Component {
           type: "GET",
           success: (result) => {
             this.setState({
+              post_id: result.post_id,
               subject: result.subject,
               content: result.content,
               replies: result.replies,
@@ -41,7 +43,7 @@ class Post extends Component {
 
     //Select speicific page
     selectPage(num) {
-        this.setState({page: num}, () => this.getPost());
+        this.setState({page: num}, () => this.getPost(this.state.post_id));
     }
 
     createPagination(){
@@ -76,6 +78,33 @@ class Post extends Component {
       }
     }
 
+    submitReply = (id) => (event) => {
+      event.preventDefault();
+      $.ajax({
+        url: `/posts/${id}`, //TODO: update request URL
+        type: "POST",
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          content: this.state.reply_content
+        }),
+        xhrFields: {
+          withCredentials: true
+        },
+        crossDomain: true,
+        success: (result) => {
+          window.location.reload()
+        },
+        error: (error) => {
+          alert('Unable to create reply. Please try your request again')
+        }
+      })
+    }
+
+    handleChange = (event) => {
+      this.setState({[event.target.name]: event.target.value})
+    }
+
     render() {
         return (
           <div className="post-view">
@@ -84,6 +113,11 @@ class Post extends Component {
               <div className="Post-holder">
                 <h4>{this.state.content}</h4>
               </div>
+              <form className="reply-view" id="create-reply-form" onSubmit={this.submitReply(this.state.post_id)}>
+                <label><br></br>Reply:<br></br></label>
+                <textarea rows='10' name="reply_content" onChange={this.handleChange}/>
+                <input type="submit" className="button" value="Submit" />
+              </form>
               {this.state.replies.map((r, ind) => (
                 <Replyline
                   key={r.id}
