@@ -21,7 +21,7 @@ class Postline extends Component {
       <div className="Post-holder">
         <Link className="Post" to={`/posts/${id}`}>{subject}</Link>
         <div className="Post-status">
-            <img style={{"visibility": this.state.visibleAnswer ? 'visible' : 'hidden'}} src="delete.png" className="delete" onClick={() => this.props.deleteAction('DELETE')}/>
+            <img alt="deleted" style={{"visibility": this.state.visibleAnswer ? 'visible' : 'hidden'}} src="delete.png" className="delete" onClick={() => this.props.deleteAction('DELETE')}/>
         </div>
       </div>
     );

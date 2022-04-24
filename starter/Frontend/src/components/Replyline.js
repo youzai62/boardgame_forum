@@ -20,7 +20,7 @@ class Replyline extends Component {
       <div className="Reply-holder">
         <div className="Reply">{subject}</div>
         <div className="Post-status">
-            <img style={{"visibility": this.state.visibleAnswer ? 'visible' : 'hidden'}} src="delete.png" className="delete" onClick={() => this.props.deleteAction('DELETE')}/>
+            <img alt="deleted" style={{"visibility": this.state.visibleAnswer ? 'visible' : 'hidden'}} src="delete.png" className="delete" onClick={() => this.props.deleteAction('DELETE')}/>
         </div>
       </div>
     );

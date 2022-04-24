@@ -11,17 +11,20 @@ import FormView from './components/FormView';
 import PostsView from './components/PostsView';
 import Header from './components/Header.js';
 import Post from './components/Post.js';
+import Profile from './components/Profile';
+import ProtectedRoute from './components/ProtectedRoute';
 
 
 class App extends Component {
   render() {
     return (
     <div className="App">
-      <Header path />
+      <Header />
       <Router>
         <Switch>
           <Route path="/" exact component={PostsView} />
-          <Route path="/createpost" component={FormView} />
+          <ProtectedRoute path="/createpost" component={FormView} />
+          <ProtectedRoute path="/profile" component={Profile} />
           <Route path="/posts/:id" component={Post} />
           <Route component={PostsView} />
         </Switch>
