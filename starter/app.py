@@ -1,6 +1,7 @@
 import json
 from functools import wraps
 import os
+from urllib import response
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from models import setup_db, Post, Reply
@@ -17,7 +18,7 @@ def create_app(test_config=None):
 
     app = Flask(__name__)
     setup_db(app)
-    CORS(app, resources={r"*" : {"origins": '*'}})
+    CORS(app, resources={r"*" : {"origins": 'http://localhost:3000/'}})
 
     class AuthError(Exception):
         def __init__(self, error, status_code):
@@ -110,7 +111,7 @@ def create_app(test_config=None):
             }, 400)
 
     def check_permissions(permission, payload):
-        if 'permission' not in payload:
+        if 'permissions' not in payload:
             abort(400)
 
         if permission not in payload[permission]:
@@ -228,7 +229,7 @@ def create_app(test_config=None):
         'total_replies': len(replies)})
 
     @app.route('/posts/<int:post_id>', methods=["POST"])
-    #@cross_origin
+    @requires_auth('post:replies')
     def create_reply(post_id):
         try:
             body = request.get_json()

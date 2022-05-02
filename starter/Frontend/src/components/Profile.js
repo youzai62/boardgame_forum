@@ -1,8 +1,25 @@
-import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import React, { useEffect } from "react";
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import Loading from './Loading';
 
 const Profile = () => {
-  const { user } = useAuth0();
+  const { user, getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+    const getUserToken = async () => {
+      try {
+        const accessToken = await getAccessTokenSilently({
+          audience: `boardgameforum`
+        });
+        console.log(accessToken);
+        sessionStorage.setItem("token", accessToken);
+      } catch (e) {
+        console.log(e.message);
+      }
+    };
+
+    getUserToken();
+  });
 
   return (
     <div>
@@ -28,4 +45,7 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default withAuthenticationRequired(Profile, {
+  returnTo: () => window.location.hash.substr(1),
+  onRedirecting: () => <Loading />,
+});

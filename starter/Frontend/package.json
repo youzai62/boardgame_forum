@@ -10,7 +10,9 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "express-jwt": "7.5.2",
+    "jwks-rsa": "2.1.0"
   },
   "scripts": {
     "start": "node node_modules/react-scripts/scripts/start.js",

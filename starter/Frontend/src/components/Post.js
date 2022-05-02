@@ -85,6 +85,9 @@ class Post extends Component {
         type: "POST",
         dataType: 'json',
         contentType: 'application/json',
+        headers: {
+          "Authorization": "Bearer " + sessionStorage.getItem("token")
+        },
         data: JSON.stringify({
           content: this.state.reply_content
         }),
@@ -121,6 +124,7 @@ class Post extends Component {
               {this.state.replies.map((r, ind) => (
                 <Replyline
                   key={r.id}
+                  id={r.id}
                   subject={r.content}
                   deleteAction={this.deleteAction(r.id)}
                 />

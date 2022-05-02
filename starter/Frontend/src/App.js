@@ -24,7 +24,7 @@ class App extends Component {
         <Switch>
           <Route path="/" exact component={PostsView} />
           <ProtectedRoute path="/createpost" component={FormView} />
-          <ProtectedRoute path="/profile" component={Profile} />
+          <Route path="/profile" component={Profile} />
           <Route path="/posts/:id" component={Post} />
           <Route component={PostsView} />
         </Switch>

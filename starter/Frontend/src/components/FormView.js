@@ -5,13 +5,13 @@ import '../css/FormView.css';
 class FormView extends Component {
   constructor(props){
     super(props);
+    this.access_token = ""
     this.state = {
       subject: "",
-      content: ""
-    }
+      content: "",
+      token: ""
+    };
   }
-
-
   submitPost = (event) => {
     event.preventDefault();
     $.ajax({
@@ -19,6 +19,9 @@ class FormView extends Component {
       type: "POST",
       dataType: 'json',
       contentType: 'application/json',
+      headers: {
+        "Authorization": "Bearer " + sessionStorage.getItem("token")
+      },
       data: JSON.stringify({
         subject: this.state.subject,
         content: this.state.content

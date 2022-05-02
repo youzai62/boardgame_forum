@@ -122,6 +122,7 @@ class PostsView extends Component {
           <h2>Posts</h2>
           {this.state.posts.map((p, ind) => (
             <Postline
+              key={p.id}
               id={p.id}
               subject={p.subject}
               getAction={this.getAction(p.id)}
