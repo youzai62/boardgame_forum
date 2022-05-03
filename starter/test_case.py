@@ -59,10 +59,10 @@ class ForumTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         
 
-    def test_403_creat_post(self):
+    def test_401_creat_post(self):
         res = self.client().post('/posts', json={'subject':  'Ark Nova is a great game','content':  'Everyone love to build zoo!'})
 
-        self.assertEqual(res.status_code, 403)
+        self.assertEqual(res.status_code, 401)
 
     def test_delete_specific_post(self):
         res = self.client().delete('/posts/1', headers={'Authorization': "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1oVHZHUlVKNWNRVnFrbTh2T3FzNSJ9.eyJpc3MiOiJodHRwczovL2Rldi1yb3l6aHUudXMuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTE3NjE5OTkwOTA1MjU4NzcwMjgzIiwiYXVkIjpbImJvYXJkZ2FtZWZvcnVtIiwiaHR0cHM6Ly9kZXYtcm95emh1LnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2NTE1NjA3NDMsImV4cCI6MTY1MTY0NzE0MywiYXpwIjoid1JKRWNCeTQ2Nk1ReDZWZVF6emVtMWtTWXMzQ3hwQ0ciLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOnBvc3RzIiwiZGVsZXRlOnJlcGx5IiwicG9zdDpwb3N0cyIsInBvc3Q6cmVwbHkiXX0.oevsn0Hv28USqla1NfZuA1THm9cV1_c5zW9t2cLaQDbj9_VKaq-R6ebvickiQwkhacrvMn2asFTo-rOBavSMFmU77FeoMTZjKAx_B9XHbrtyAYV73IGOB1wawayGT_URU7WUSFJ6WGU5VEnUDGmDanhjrYAaB4iq9RujSveX550GL_sOYdsUQ2sOK35URM4F2mOkhFmxaSvL7JlzO7Zi1syf5AmXa2YDFtQA4h5GA_-c5DNesi58v_xS0DIMBtYBj2Gt53gCtTrtAq3j1F__5c2GX54aX_CMYwBZO9s4Zsw-dOshAET2iRTpfBK6iXg4Oan59Y9xNMf6uT2rrwT38A"})
@@ -116,17 +116,17 @@ class ForumTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
 
     def test_create_reply(self):
-        res = self.client().post('/posts/5',  json={'content':"I think 7 wonders duel better!"}, headers={'Authorization': "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1oVHZHUlVKNWNRVnFrbTh2T3FzNSJ9.eyJpc3MiOiJodHRwczovL2Rldi1yb3l6aHUudXMuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTE3NjE5OTkwOTA1MjU4NzcwMjgzIiwiYXVkIjpbImJvYXJkZ2FtZWZvcnVtIiwiaHR0cHM6Ly9kZXYtcm95emh1LnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2NTE1NjA3NDMsImV4cCI6MTY1MTY0NzE0MywiYXpwIjoid1JKRWNCeTQ2Nk1ReDZWZVF6emVtMWtTWXMzQ3hwQ0ciLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOnBvc3RzIiwiZGVsZXRlOnJlcGx5IiwicG9zdDpwb3N0cyIsInBvc3Q6cmVwbHkiXX0.oevsn0Hv28USqla1NfZuA1THm9cV1_c5zW9t2cLaQDbj9_VKaq-R6ebvickiQwkhacrvMn2asFTo-rOBavSMFmU77FeoMTZjKAx_B9XHbrtyAYV73IGOB1wawayGT_URU7WUSFJ6WGU5VEnUDGmDanhjrYAaB4iq9RujSveX550GL_sOYdsUQ2sOK35URM4F2mOkhFmxaSvL7JlzO7Zi1syf5AmXa2YDFtQA4h5GA_-c5DNesi58v_xS0DIMBtYBj2Gt53gCtTrtAq3j1F__5c2GX54aX_CMYwBZO9s4Zsw-dOshAET2iRTpfBK6iXg4Oan59Y9xNMf6uT2rrwT38A"})
+        res = self.client().post('/posts/5',  json={"reply":"I think 7 wonders duel better!"}, headers={"Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1oVHZHUlVKNWNRVnFrbTh2T3FzNSJ9.eyJpc3MiOiJodHRwczovL2Rldi1yb3l6aHUudXMuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTE3NjE5OTkwOTA1MjU4NzcwMjgzIiwiYXVkIjpbImJvYXJkZ2FtZWZvcnVtIiwiaHR0cHM6Ly9kZXYtcm95emh1LnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2NTE1NjA3NDMsImV4cCI6MTY1MTY0NzE0MywiYXpwIjoid1JKRWNCeTQ2Nk1ReDZWZVF6emVtMWtTWXMzQ3hwQ0ciLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOnBvc3RzIiwiZGVsZXRlOnJlcGx5IiwicG9zdDpwb3N0cyIsInBvc3Q6cmVwbHkiXX0.oevsn0Hv28USqla1NfZuA1THm9cV1_c5zW9t2cLaQDbj9_VKaq-R6ebvickiQwkhacrvMn2asFTo-rOBavSMFmU77FeoMTZjKAx_B9XHbrtyAYV73IGOB1wawayGT_URU7WUSFJ6WGU5VEnUDGmDanhjrYAaB4iq9RujSveX550GL_sOYdsUQ2sOK35URM4F2mOkhFmxaSvL7JlzO7Zi1syf5AmXa2YDFtQA4h5GA_-c5DNesi58v_xS0DIMBtYBj2Gt53gCtTrtAq3j1F__5c2GX54aX_CMYwBZO9s4Zsw-dOshAET2iRTpfBK6iXg4Oan59Y9xNMf6uT2rrwT38A"})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         
 
-    def test_403_creat_reply(self):
-        res = self.client().post('/posts/3', json={'content':  'The box is so huge!'})
+    def test_401_creat_reply(self):
+        res = self.client().post('/posts/3', json={'reply':  'The box is so huge!'})
 
-        self.assertEqual(res.status_code, 403)
+        self.assertEqual(res.status_code, 401)
     
     def test_delete_specific_reply(self):
         res = self.client().delete('/replies/6', headers={'Authorization': "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1oVHZHUlVKNWNRVnFrbTh2T3FzNSJ9.eyJpc3MiOiJodHRwczovL2Rldi1yb3l6aHUudXMuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTE3NjE5OTkwOTA1MjU4NzcwMjgzIiwiYXVkIjpbImJvYXJkZ2FtZWZvcnVtIiwiaHR0cHM6Ly9kZXYtcm95emh1LnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2NTE1NjA3NDMsImV4cCI6MTY1MTY0NzE0MywiYXpwIjoid1JKRWNCeTQ2Nk1ReDZWZVF6emVtMWtTWXMzQ3hwQ0ciLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOnBvc3RzIiwiZGVsZXRlOnJlcGx5IiwicG9zdDpwb3N0cyIsInBvc3Q6cmVwbHkiXX0.oevsn0Hv28USqla1NfZuA1THm9cV1_c5zW9t2cLaQDbj9_VKaq-R6ebvickiQwkhacrvMn2asFTo-rOBavSMFmU77FeoMTZjKAx_B9XHbrtyAYV73IGOB1wawayGT_URU7WUSFJ6WGU5VEnUDGmDanhjrYAaB4iq9RujSveX550GL_sOYdsUQ2sOK35URM4F2mOkhFmxaSvL7JlzO7Zi1syf5AmXa2YDFtQA4h5GA_-c5DNesi58v_xS0DIMBtYBj2Gt53gCtTrtAq3j1F__5c2GX54aX_CMYwBZO9s4Zsw-dOshAET2iRTpfBK6iXg4Oan59Y9xNMf6uT2rrwT38A"})

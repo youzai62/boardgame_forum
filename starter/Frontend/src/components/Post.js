@@ -94,14 +94,14 @@ class Post extends Component {
           "Authorization": "Bearer " + sessionStorage.getItem("token")
         },
         data: JSON.stringify({
-          content: this.state.reply_content
+          reply: this.state.reply_content
         }),
         xhrFields: {
           withCredentials: true
         },
         crossDomain: true,
         success: (result) => {
-          window.location.reload()
+          this.componentDidMount();
         },
         error: (error) => {
           alert('Unable to create reply. Please try your request again')

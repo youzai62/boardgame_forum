@@ -234,15 +234,17 @@ def create_app(test_config=None):
     def create_reply(jwt, post_id):
         try:
             body = request.get_json()
-            content = body.get('content', None)
+            content = body.get('reply', None)
             reply = Reply(post_id, content)
+            if content is None:
+                abort(400)
             reply.insert()
 
             return jsonify({
                 'success': True
             })
         except:
-            abort(400)
+            abort(422)
     
     @app.route('/replies/<int:reply_id>', methods=["DELETE"])
     @requires_auth('delete:reply')
@@ -302,9 +304,9 @@ def create_app(test_config=None):
     def handle_auth_error(error):
         return jsonify({
             "success": False, 
-            "error": 403,
-            "message": "Forbideen"
-        }), 403
+            "error": error.status_code,
+            "message": error.error
+        }), error.status_code
 
     return app
 
