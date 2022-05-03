@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Replyline from './Replyline';
 import $ from 'jquery';
 import '../css/Post.css';
+import { Link } from 'react-router-dom';
+
 
 class Post extends Component {
     constructor(props){
@@ -67,6 +69,9 @@ class Post extends Component {
           $.ajax({
             url: `/replies/${id}`, //TODO: update request URL
             type: "DELETE",
+            headers: {
+              "Authorization": "Bearer " + sessionStorage.getItem("token")
+            },
             success: (result) => {
               this.componentDidMount();
             },
@@ -116,6 +121,7 @@ class Post extends Component {
               <div className="Post-holder">
                 <h4>{this.state.content}</h4>
               </div>
+              <Link className="Post" to={`/editpost/${this.state.post_id}`}>Update</Link>
               <form className="reply-view" id="create-reply-form" onSubmit={this.submitReply(this.state.post_id)}>
                 <label><br></br>Reply:<br></br></label>
                 <textarea rows='10' name="reply_content" onChange={this.handleChange}/>

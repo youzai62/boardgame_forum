@@ -28,7 +28,7 @@ DROP TABLE IF EXISTS pulic.replies;
 
 CREATE TABLE public.replies (
     id integer NOT NULL,
-    post_id integer NOT NULL,
+    post_id integer,
     content text NOT NULL
 );
 
@@ -113,7 +113,7 @@ ALTER TABLE ONLY public.posts ALTER COLUMN id SET DEFAULT nextval('public.posts_
 COPY public.posts (id, subject, content) FROM stdin;
 1	Amazon on sale board game	Any on sale boardgame on amzon recommand?
 2	Gloomhaven review	Gloomhaven is a good legacy game.
-3	Great insert for AH LCG	The one I found on Etsy...
+3	Great insert for AH LCG	The one I found on Amazon...
 4	Second hand splendor for sale	I need to get some space for my new boardgame, so...
 5	Tamashii is almost end of kickstart	Please submit your pledge before ending!   
 \.

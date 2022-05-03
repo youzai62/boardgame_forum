@@ -8,8 +8,7 @@ class FormView extends Component {
     this.access_token = ""
     this.state = {
       subject: "",
-      content: "",
-      token: ""
+      content: ""
     };
   }
   submitPost = (event) => {

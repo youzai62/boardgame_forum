@@ -13,6 +13,7 @@ import Header from './components/Header.js';
 import Post from './components/Post.js';
 import Profile from './components/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
+import UpdateForm from './components/UpdateForm';
 
 
 class App extends Component {
@@ -23,9 +24,10 @@ class App extends Component {
       <Router>
         <Switch>
           <Route path="/" exact component={PostsView} />
-          <ProtectedRoute path="/createpost" component={FormView} />
-          <Route path="/profile" component={Profile} />
-          <Route path="/posts/:id" component={Post} />
+          <ProtectedRoute path={"/createpost"} component={FormView} />
+          <Route path={"/editpost/:id"} component={UpdateForm} />
+          <ProtectedRoute path={"/profile"} component={Profile} />
+          <Route path={"/posts/:id"} component={Post} />
           <Route component={PostsView} />
         </Switch>
       </Router>

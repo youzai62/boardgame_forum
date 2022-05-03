@@ -18,7 +18,7 @@ def create_app(test_config=None):
 
     app = Flask(__name__)
     setup_db(app)
-    CORS(app, resources={r"*" : {"origins": 'http://localhost:3000/'}})
+    CORS(app, resources={r"*" : {"origins": '*'}})
 
     class AuthError(Exception):
         def __init__(self, error, status_code):
@@ -112,9 +112,9 @@ def create_app(test_config=None):
 
     def check_permissions(permission, payload):
         if 'permissions' not in payload:
-            abort(400)
+            abort(403)
 
-        if permission not in payload[permission]:
+        if permission not in payload["permissions"]:
             abort(403)
         
         return True
@@ -128,7 +128,7 @@ def create_app(test_config=None):
                     payload = verify_decode_jwt(token)
                 except:
                     abort(401)
-
+                
                 check_permissions(permission, payload)
 
                 return f(payload, *args, **kwargs)
@@ -138,7 +138,7 @@ def create_app(test_config=None):
 
     @app.after_request
     def after_request(response):
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization')  
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization, ture')  
         response.headers.add('Access-Control-Allow-Headers', 'GET, POST, PATCH, DELETE, OPTION')
         return response
 
@@ -160,7 +160,7 @@ def create_app(test_config=None):
     
     @app.route('/posts', methods=["POST"])
     @requires_auth('post:posts')
-    def create_post():
+    def create_post(jwt):
         try:
             body = request.get_json()
             subject = body.get('subject', None)
@@ -171,12 +171,13 @@ def create_app(test_config=None):
             return jsonify({
                 'success': True
             })
-        except:
+        except Exception as e:
+            print(e)
             abort(400)
 
     @app.route('/posts/<int:post_id>', methods=["DELETE"])
-    #@cross_origin
-    def delete_specific_post(post_id):
+    @requires_auth('delete:posts')
+    def delete_specific_post(jwt, post_id):
         post = Post.query.filter(Post.id == post_id).one_or_none()
         if post is None:
             abort(404)
@@ -188,8 +189,8 @@ def create_app(test_config=None):
         })
         
     @app.route('/posts/<int:post_id>', methods=["PATCH"])
-    #@cross_origin
-    def update_specific_post(post_id):
+    @requires_auth('patch:posts')
+    def update_specific_post(jwt, post_id):
         try:
             body = request.get_json()
             subject = body.get('subject', None)
@@ -229,8 +230,8 @@ def create_app(test_config=None):
         'total_replies': len(replies)})
 
     @app.route('/posts/<int:post_id>', methods=["POST"])
-    @requires_auth('post:replies')
-    def create_reply(post_id):
+    @requires_auth('post:reply')
+    def create_reply(jwt, post_id):
         try:
             body = request.get_json()
             content = body.get('content', None)
@@ -244,8 +245,8 @@ def create_app(test_config=None):
             abort(400)
     
     @app.route('/replies/<int:reply_id>', methods=["DELETE"])
-    #@cross_origin
-    def delete_specific_reply(reply_id):
+    @requires_auth('delete:reply')
+    def delete_specific_reply(jwt, reply_id):
         reply = Reply.query.filter(Reply.id == reply_id).one_or_none()
         if reply is None:
             abort(404)
@@ -264,8 +265,7 @@ def create_app(test_config=None):
             search_term = body.get('searchTerm', None)
             result=Post.query.filter(Post.subject.ilike('%{}%'.format(search_term))).order_by(Post.id).all()
             formatted_posts = [post.format() for post in result]
-            if len(formatted_posts) == 0:
-                abort(404)
+ 
             return jsonify({
                 'success': True,
                 'posts': formatted_posts,
@@ -274,6 +274,38 @@ def create_app(test_config=None):
         except:
             abort(400)
     
+    @app.errorhandler(404)
+    def not_found(error):
+        return jsonify({
+            "success": False, 
+            "error": 404,
+            "message": "Not Found"
+        }), 404
+
+    @app.errorhandler(400)
+    def bad_request(error):
+        return jsonify({
+            "success": False, 
+            "error": 400,
+            "message": "Bad Request"
+        }), 400
+
+    @app.errorhandler(422)
+    def unprcessable(error):
+        return jsonify({
+            "success": False, 
+            "error": 422,
+            "message": "Unprocessable"
+        }), 422
+
+    @app.errorhandler(AuthError)
+    def handle_auth_error(error):
+        return jsonify({
+            "success": False, 
+            "error": 403,
+            "message": "Forbideen"
+        }), 403
+
     return app
 
 

@@ -101,6 +101,9 @@ class PostsView extends Component {
         $.ajax({
           url: `/posts/${id}`, //TODO: update request URL
           type: "DELETE",
+          headers: {
+            "Authorization": "Bearer " + sessionStorage.getItem("token")
+          },
           success: (result) => {
             this.getPosts();
           },
