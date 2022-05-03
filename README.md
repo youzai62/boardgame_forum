@@ -45,7 +45,7 @@ Delete a specified post with its id.
 ### /replies/:replied_id - DELETE:
 Delete a specified reply with its id
 
-### /posts/result
+### /posts/result - POST:
 Search posts' subject and server will return all posts which are relevant to the search term.
 
 
