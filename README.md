@@ -6,17 +6,17 @@ I am a huge fan of boardgame, so I want to build a place for boardgame fans.
 It is boardgame forum for all boardgame fans to share their hobbies.
 
 ## Role and permission:
-# Visitor:
+### Visitor:
 1. Check all posts 
 2. Check all replies in each post
 3. Search posts' subject
 
-# Register users:
+### Register users:
 1. Make post
 2. Make a reply to a post
 3. Update post
 
-# Administrator
+### Administrator
 1. Delete post
 2. Delete replies
 3. Make post
@@ -24,28 +24,28 @@ It is boardgame forum for all boardgame fans to share their hobbies.
 
 ## Endpoints
 
-# /posts - GET:
+### /posts - GET:
 Retrives all posts and make the list with 15 posts each page.
 
-# /posts - POST:
+### /posts - POST:
 Creat a new post with post's subject and content.
 
-# /post/:id - GET:
+### /post/:id - GET:
 Retrives a specific post with its id, and server will return post's subject, content and its replies
 
-# /post/:id - POST:
+### /post/:id - POST:
 Create a new reply to the specific post with post id.
 
-# /post/:id - PATCH:
+### /post/:id - PATCH:
 Update a specific post with a new subject and/or a new content.(Only Administrator allow to do that)
 
-# /post/:id - DELETE:
+### /post/:id - DELETE:
 Delete a specified post with its id.
 
-# /replies/:replied_id - DELETE:
+### /replies/:replied_id - DELETE:
 Delete a specified reply with its id
 
-# /posts/result
+### /posts/result
 Search posts' subject and server will return all posts which are relevant to the search term.
 
 
