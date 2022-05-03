@@ -18,6 +18,24 @@ Administrator
 3. Make post
 4. Make a reply to a post
 
+Endpoints:
+/posts - GET:
+Retrives all posts and make the list with 15 posts each page.
+/posts - POST:
+Creat a new post with post's subject and content.
+/post/:id - GET:
+Retrives a specific post with its id, and server will return post's subject, content and its replies
+/post/:id - POST:
+Create a new reply to the specific post with post id.
+/post/:id - PATCH:
+Update a specific post with a new subject and/or a new content.(Only Administrator allow to do that)
+/post/:id - DELETE:
+Delete a specified post with its id.
+/replies/:replied_id - DELETE:
+Delete a specified reply with its id
+/posts/result
+Search posts' subject and server will return all posts which are relevant to the search term.
+
 
 ## Starting and Submitting the Project
 
