@@ -124,13 +124,13 @@ COPY public.posts (id, subject, content) FROM stdin;
 --
 
 COPY public.replies (id, post_id, content) FROM stdin;
-6	1	Windspan
-7	2	Agree
-8	3	I got it from broken token
-9	4	Sorry, I had one already
-10	4	How much?
-11	5	Thank you for reminding
-12	5	I choose the bigbox pledge, how your guys? 
+1	1	Windspan
+2	2	Agree
+3	3	I got it from broken token
+4	4	Sorry, I had one already
+5	4	How much?
+6	5	Thank you for reminding
+7	5	I choose the bigbox pledge, how your guys? 
 \.
 
 --
