@@ -6,47 +6,84 @@ I am a huge fan of boardgame, so I want to build a place for boardgame fans.
 It is boardgame forum for all boardgame fans to share their hobbies.
 
 ## Role and permission:
-### Visitor:
-1. Check all posts 
-2. Check all replies in each post
-3. Search posts' subject
+### Visitor(Everyone):
+1. Check all posts - /posts GET
+2. Check all replies in each post - /posts/:id GET
+3. Search posts' subject - /posts/result POST
 
 ### Register users:
-1. Make post
-2. Make a reply to a post
-3. Update post
+1. Make post - /posts POST
+2. Make a reply to a post  - /posts/:id POST
+3. Update post  - /posts/:id PATCH
 
 ### Administrator
-1. Delete post
-2. Delete replies
-3. Make post
-4. Make a reply to a post
+1. Delete post - /posts/:id DELETE
+2. Delete replies -/replies/:replies_id DELETE
+3. Make post - /posts POST
+4. Make a reply to a post - /posts/:id POST
 
 ## Endpoints
 
-### /posts - GET:
-Retrives all posts and make the list with 15 posts each page.
+### "GET" /posts:
+- Retrives all posts and make the list with 15 posts each page.
+- Returns: Json opject contains: 
+    {
+        'success':True,
+        'posts':formatted_posts[start:end],
+        'total_posts': len(posts)
+    }
+- sample : curl -X GET http://127.0.0.1:5000/posts'
 
-### /posts - POST:
-Creat a new post with post's subject and content.
+### "POST" /posts:
+- Creat a new post with post's subject and content.
+- Request Arguments: json object contains at least all values (subject, content)
+- Returns: Json opject contains: {'succes': True}
+- sample : curl -X POST http://127.0.0.1:5000/posts -H "Authorization: Bearer <ACCESS_TOKEN>" -d '{"subject":"mahmoud", "content":"mahmoud"}'
 
-### /post/:id - GET:
-Retrives a specific post with its id, and server will return post's subject, content and its replies
+### "GET" /post/:id:
+- Retrives a specific post with its id, and server will return post's subject, content and its replies
+- Returns: Json opject contains: 
+    {
+        'success':True,'post_id': post.id,
+        'subject': post.subject,
+        'content': post.content,
+        'replies':formatted_replies[start:end],
+        'total_replies': len(replies)
+    }
+- sample : curl -X GET http://127.0.0.1:5000/posts/1'
 
-### /post/:id - POST:
-Create a new reply to the specific post with post id.
+### "POST" /post/:id:
+- Create a new reply to the specific post with post id.
+- Request Arguments: json object contains one value (reply)
+- Returns: Json opject contains {'succes': True}
+- sample : curl -X POST http://127.0.0.1:5000/posts/1 -H "Authorization: Bearer <ACCESS_TOKEN>" -d '{"reply":"mahmoud"}'
 
-### /post/:id - PATCH:
-Update a specific post with a new subject and/or a new content.(Only Administrator allow to do that)
+### "PATCH" /post/:id:
+- Update a specific post with a new subject and/or a new content.(Only Administrator allow to do that)
+- Request Arguments: json object contains at least one of these values (subject, content)
+- Returns: Json opject contains {'succes': True, 'updated': X}
+- sample : curl -X PATHCH http://127.0.0.1:5000/posts/6 -H "Authorization: Bearer <ACCESS_TOKEN>" -d '{"subject":"mahmoud", "content":"content"}'
 
-### /post/:id - DELETE:
-Delete a specified post with its id.
+### "DELETE" /post/:id:
+- Delete a specified post with its id.
+- Returns: Json opject contains {'succes': True, 'deleted': X}
+- sample : curl -X DELETE http://127.0.0.1:5000/posts/2 -H "Authorization: Bearer <ACCESS_TOKEN>'
 
-### /replies/:replied_id - DELETE:
-Delete a specified reply with its id
+### "DELETE" /replies/:replied_id:
+- Delete a specified reply with its id
+- Returns: Json opject contains {'succes': True, 'deleted': {}}
+- sample : curl -X DELETE http://127.0.0.1:5000/replies/6 -H "Authorization: Bearer <ACCESS_TOKEN>"'
 
 ### /posts/result - POST:
-Search posts' subject and server will return all posts which are relevant to the search term.
+- Search posts' subject and server will return all posts which are relevant to the search term.
+- Request Arguments: json object contains one values (searchTerm)
+- Returns: Json opject contains 
+            {
+                'success': True,
+                'posts': formatted_posts,
+                'totalPosts': len(formatted_posts)
+            }
+- sample : curl -X POST http://127.0.0.1:8080/posts/result -H "Authorization: Bearer <ACCESS_TOKEN>" -d '{"searchTerm":"mahmoud"}'
 
 
 ## Starting and Submitting the Project
@@ -66,12 +103,12 @@ Backend set up:
 
 3. **PIP Dependencies** - Once you have your virtual environment setup and running, install dependencies by naviging to the `/backend` directory and running:
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 This will install all of the required packages we selected within the `requirements.txt` file.
 
 ### Database Setup
-Remember to update your database url config in setup.sh in starter folder.
+**Remember to update your database url config and auth0 config in setup.sh in starter folder.**
 
 With Postgres running, create a database named "boardgame" restore a database using the Test_db.psql file provided. From the starter Folder in terminal run:
 ```bash
@@ -91,7 +128,10 @@ flask run
 If you want to test
 ```bash
 source setup.sh
+### On linux:
 export FLASK_ENV=development
+### On windows:
+set FLASK_ENV=development
 flask run
 ```
 

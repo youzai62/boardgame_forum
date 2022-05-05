@@ -6,6 +6,8 @@ from flask_sqlalchemy import SQLAlchemy
 from app import create_app
 from models import setup_db, Post, Reply
 
+ADMINISTRATOR = os.environ.get('ADMINISTRATOR')
+REGISTED_VISITOR = os.environ.get['REGISTED_VISITOR']
 
 class ForumTestCase(unittest.TestCase):
     """This class represents the trivia test case"""
@@ -52,7 +54,7 @@ class ForumTestCase(unittest.TestCase):
 
 
     def test_create_post(self):
-        res = self.client().post('/posts', headers={'Authorization': "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1oVHZHUlVKNWNRVnFrbTh2T3FzNSJ9.eyJpc3MiOiJodHRwczovL2Rldi1yb3l6aHUudXMuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTE3NjE5OTkwOTA1MjU4NzcwMjgzIiwiYXVkIjpbImJvYXJkZ2FtZWZvcnVtIiwiaHR0cHM6Ly9kZXYtcm95emh1LnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2NTE1NjA3NDMsImV4cCI6MTY1MTY0NzE0MywiYXpwIjoid1JKRWNCeTQ2Nk1ReDZWZVF6emVtMWtTWXMzQ3hwQ0ciLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOnBvc3RzIiwiZGVsZXRlOnJlcGx5IiwicG9zdDpwb3N0cyIsInBvc3Q6cmVwbHkiXX0.oevsn0Hv28USqla1NfZuA1THm9cV1_c5zW9t2cLaQDbj9_VKaq-R6ebvickiQwkhacrvMn2asFTo-rOBavSMFmU77FeoMTZjKAx_B9XHbrtyAYV73IGOB1wawayGT_URU7WUSFJ6WGU5VEnUDGmDanhjrYAaB4iq9RujSveX550GL_sOYdsUQ2sOK35URM4F2mOkhFmxaSvL7JlzO7Zi1syf5AmXa2YDFtQA4h5GA_-c5DNesi58v_xS0DIMBtYBj2Gt53gCtTrtAq3j1F__5c2GX54aX_CMYwBZO9s4Zsw-dOshAET2iRTpfBK6iXg4Oan59Y9xNMf6uT2rrwT38A"}, json={'subject':  'Ark Nova is a great game','content':  'Everyone love to build zoo!'})
+        res = self.client().post('/posts', headers={'Authorization': "Bearer "+ADMINISTRATOR}, json={'subject':  'Ark Nova is a great game','content':  'Everyone love to build zoo!'})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -65,7 +67,7 @@ class ForumTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 401)
 
     def test_delete_specific_post(self):
-        res = self.client().delete('/posts/1', headers={'Authorization': "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1oVHZHUlVKNWNRVnFrbTh2T3FzNSJ9.eyJpc3MiOiJodHRwczovL2Rldi1yb3l6aHUudXMuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTE3NjE5OTkwOTA1MjU4NzcwMjgzIiwiYXVkIjpbImJvYXJkZ2FtZWZvcnVtIiwiaHR0cHM6Ly9kZXYtcm95emh1LnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2NTE1NjA3NDMsImV4cCI6MTY1MTY0NzE0MywiYXpwIjoid1JKRWNCeTQ2Nk1ReDZWZVF6emVtMWtTWXMzQ3hwQ0ciLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOnBvc3RzIiwiZGVsZXRlOnJlcGx5IiwicG9zdDpwb3N0cyIsInBvc3Q6cmVwbHkiXX0.oevsn0Hv28USqla1NfZuA1THm9cV1_c5zW9t2cLaQDbj9_VKaq-R6ebvickiQwkhacrvMn2asFTo-rOBavSMFmU77FeoMTZjKAx_B9XHbrtyAYV73IGOB1wawayGT_URU7WUSFJ6WGU5VEnUDGmDanhjrYAaB4iq9RujSveX550GL_sOYdsUQ2sOK35URM4F2mOkhFmxaSvL7JlzO7Zi1syf5AmXa2YDFtQA4h5GA_-c5DNesi58v_xS0DIMBtYBj2Gt53gCtTrtAq3j1F__5c2GX54aX_CMYwBZO9s4Zsw-dOshAET2iRTpfBK6iXg4Oan59Y9xNMf6uT2rrwT38A"})
+        res = self.client().delete('/posts/1', headers={'Authorization': "Bearer "+ADMINISTRATOR})
         data = json.loads(res.data)
 
         post = Post.query.filter(Post.id == 1).one_or_none()
@@ -77,7 +79,7 @@ class ForumTestCase(unittest.TestCase):
         
 
     def test_404_delete_specific_post(self):
-        res = self.client().delete('/posts/1000', headers={'Authorization': "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1oVHZHUlVKNWNRVnFrbTh2T3FzNSJ9.eyJpc3MiOiJodHRwczovL2Rldi1yb3l6aHUudXMuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTE3NjE5OTkwOTA1MjU4NzcwMjgzIiwiYXVkIjpbImJvYXJkZ2FtZWZvcnVtIiwiaHR0cHM6Ly9kZXYtcm95emh1LnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2NTE1NjA3NDMsImV4cCI6MTY1MTY0NzE0MywiYXpwIjoid1JKRWNCeTQ2Nk1ReDZWZVF6emVtMWtTWXMzQ3hwQ0ciLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOnBvc3RzIiwiZGVsZXRlOnJlcGx5IiwicG9zdDpwb3N0cyIsInBvc3Q6cmVwbHkiXX0.oevsn0Hv28USqla1NfZuA1THm9cV1_c5zW9t2cLaQDbj9_VKaq-R6ebvickiQwkhacrvMn2asFTo-rOBavSMFmU77FeoMTZjKAx_B9XHbrtyAYV73IGOB1wawayGT_URU7WUSFJ6WGU5VEnUDGmDanhjrYAaB4iq9RujSveX550GL_sOYdsUQ2sOK35URM4F2mOkhFmxaSvL7JlzO7Zi1syf5AmXa2YDFtQA4h5GA_-c5DNesi58v_xS0DIMBtYBj2Gt53gCtTrtAq3j1F__5c2GX54aX_CMYwBZO9s4Zsw-dOshAET2iRTpfBK6iXg4Oan59Y9xNMf6uT2rrwT38A"})
+        res = self.client().delete('/posts/1000', headers={'Authorization': "Bearer "+ADMINISTRATOR})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -85,7 +87,7 @@ class ForumTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'Not Found')
 
     def test_update_specific_post(self):
-        res = self.client().patch('/posts/2', json={'subject':  'Redland is a great two player game','content':  'I think 7 wonders duel better!'}, headers={'Authorization': "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1oVHZHUlVKNWNRVnFrbTh2T3FzNSJ9.eyJpc3MiOiJodHRwczovL2Rldi1yb3l6aHUudXMuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDYyNTdhZjIwZmMzZjk0MDA2ZWE2OTM0YSIsImF1ZCI6WyJib2FyZGdhbWVmb3J1bSIsImh0dHBzOi8vZGV2LXJveXpodS51cy5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNjUxNTYyMzk4LCJleHAiOjE2NTE2NDg3OTgsImF6cCI6IndSSkVjQnk0NjZNUXg2VmVRenplbTFrU1lzM0N4cENHIiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInBlcm1pc3Npb25zIjpbInBhdGNoOnBvc3RzIiwicG9zdDpwb3N0cyIsInBvc3Q6cmVwbHkiXX0.CI_1Mm7paPVeL-_VKCSAnik3NlVc6B2XpiHVqiHcx8nJN1AkCkUaoH-0gu8YV-3G2HDSyyzyOcfc1velIknH2b_ttF2Kdi9sMSUKRC5BLFY1LtCfL-XntQETxrYNwxYodmtLhFlq8HJlwp0--pXVBOnyfWFsSPMogF-fIqgO-wFQaprAkyUgMDb3LnqkFFETYTJuHrkSg4E8NfHjTDgM4L8NphpKYR2Xj3MHiYXN4Ibgy1xXE1Gp5GcX-TDKIEX2iOyYCkJgGQux3VdElUE7z9EwjIdq2ASftRmtL8YaO8Z4AwRDZobM8uGU_r3TTwnYrj6NZ7JO8RiuDMG11vI9Vw"})
+        res = self.client().patch('/posts/2', json={'subject':  'Redland is a great two player game','content':  'I think 7 wonders duel better!'}, headers={'Authorization': "Bearer "+REGISTED_VISITOR})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -94,7 +96,7 @@ class ForumTestCase(unittest.TestCase):
         
 
     def test_403_update_specific_post(self):
-        res = self.client().patch('/posts/2', json={'subject':  'Redland is a great two player game','content':  'I think 7 wonders duel better!'}, headers={'Authorization': "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1oVHZHUlVKNWNRVnFrbTh2T3FzNSJ9.eyJpc3MiOiJodHRwczovL2Rldi1yb3l6aHUudXMuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTE3NjE5OTkwOTA1MjU4NzcwMjgzIiwiYXVkIjpbImJvYXJkZ2FtZWZvcnVtIiwiaHR0cHM6Ly9kZXYtcm95emh1LnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2NTE1NjA3NDMsImV4cCI6MTY1MTY0NzE0MywiYXpwIjoid1JKRWNCeTQ2Nk1ReDZWZVF6emVtMWtTWXMzQ3hwQ0ciLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOnBvc3RzIiwiZGVsZXRlOnJlcGx5IiwicG9zdDpwb3N0cyIsInBvc3Q6cmVwbHkiXX0.oevsn0Hv28USqla1NfZuA1THm9cV1_c5zW9t2cLaQDbj9_VKaq-R6ebvickiQwkhacrvMn2asFTo-rOBavSMFmU77FeoMTZjKAx_B9XHbrtyAYV73IGOB1wawayGT_URU7WUSFJ6WGU5VEnUDGmDanhjrYAaB4iq9RujSveX550GL_sOYdsUQ2sOK35URM4F2mOkhFmxaSvL7JlzO7Zi1syf5AmXa2YDFtQA4h5GA_-c5DNesi58v_xS0DIMBtYBj2Gt53gCtTrtAq3j1F__5c2GX54aX_CMYwBZO9s4Zsw-dOshAET2iRTpfBK6iXg4Oan59Y9xNMf6uT2rrwT38A"})
+        res = self.client().patch('/posts/2', json={'subject':  'Redland is a great two player game','content':  'I think 7 wonders duel better!'}, headers={'Authorization': "Bearer "+ADMINISTRATOR})
 
         self.assertEqual(res.status_code, 403)
 
@@ -116,7 +118,7 @@ class ForumTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
 
     def test_create_reply(self):
-        res = self.client().post('/posts/5',  json={"reply":"I think 7 wonders duel better!"}, headers={"Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1oVHZHUlVKNWNRVnFrbTh2T3FzNSJ9.eyJpc3MiOiJodHRwczovL2Rldi1yb3l6aHUudXMuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTE3NjE5OTkwOTA1MjU4NzcwMjgzIiwiYXVkIjpbImJvYXJkZ2FtZWZvcnVtIiwiaHR0cHM6Ly9kZXYtcm95emh1LnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2NTE1NjA3NDMsImV4cCI6MTY1MTY0NzE0MywiYXpwIjoid1JKRWNCeTQ2Nk1ReDZWZVF6emVtMWtTWXMzQ3hwQ0ciLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOnBvc3RzIiwiZGVsZXRlOnJlcGx5IiwicG9zdDpwb3N0cyIsInBvc3Q6cmVwbHkiXX0.oevsn0Hv28USqla1NfZuA1THm9cV1_c5zW9t2cLaQDbj9_VKaq-R6ebvickiQwkhacrvMn2asFTo-rOBavSMFmU77FeoMTZjKAx_B9XHbrtyAYV73IGOB1wawayGT_URU7WUSFJ6WGU5VEnUDGmDanhjrYAaB4iq9RujSveX550GL_sOYdsUQ2sOK35URM4F2mOkhFmxaSvL7JlzO7Zi1syf5AmXa2YDFtQA4h5GA_-c5DNesi58v_xS0DIMBtYBj2Gt53gCtTrtAq3j1F__5c2GX54aX_CMYwBZO9s4Zsw-dOshAET2iRTpfBK6iXg4Oan59Y9xNMf6uT2rrwT38A"})
+        res = self.client().post('/posts/5',  json={"reply":"I think 7 wonders duel better!"}, headers={'Authorization': "Bearer "+REGISTED_VISITOR})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -129,7 +131,7 @@ class ForumTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 401)
     
     def test_delete_specific_reply(self):
-        res = self.client().delete('/replies/6', headers={'Authorization': "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1oVHZHUlVKNWNRVnFrbTh2T3FzNSJ9.eyJpc3MiOiJodHRwczovL2Rldi1yb3l6aHUudXMuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTE3NjE5OTkwOTA1MjU4NzcwMjgzIiwiYXVkIjpbImJvYXJkZ2FtZWZvcnVtIiwiaHR0cHM6Ly9kZXYtcm95emh1LnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2NTE1NjA3NDMsImV4cCI6MTY1MTY0NzE0MywiYXpwIjoid1JKRWNCeTQ2Nk1ReDZWZVF6emVtMWtTWXMzQ3hwQ0ciLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOnBvc3RzIiwiZGVsZXRlOnJlcGx5IiwicG9zdDpwb3N0cyIsInBvc3Q6cmVwbHkiXX0.oevsn0Hv28USqla1NfZuA1THm9cV1_c5zW9t2cLaQDbj9_VKaq-R6ebvickiQwkhacrvMn2asFTo-rOBavSMFmU77FeoMTZjKAx_B9XHbrtyAYV73IGOB1wawayGT_URU7WUSFJ6WGU5VEnUDGmDanhjrYAaB4iq9RujSveX550GL_sOYdsUQ2sOK35URM4F2mOkhFmxaSvL7JlzO7Zi1syf5AmXa2YDFtQA4h5GA_-c5DNesi58v_xS0DIMBtYBj2Gt53gCtTrtAq3j1F__5c2GX54aX_CMYwBZO9s4Zsw-dOshAET2iRTpfBK6iXg4Oan59Y9xNMf6uT2rrwT38A"})
+        res = self.client().delete('/replies/6', headers={'Authorization': "Bearer "+ADMINISTRATOR})
         data = json.loads(res.data)
 
         reply = Reply.query.filter(Reply.id == 6).one_or_none()
@@ -141,7 +143,7 @@ class ForumTestCase(unittest.TestCase):
         
 
     def test_404_delete_specific_reply(self):
-        res = self.client().delete('/replies/1000', headers={'Authorization': "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Im1oVHZHUlVKNWNRVnFrbTh2T3FzNSJ9.eyJpc3MiOiJodHRwczovL2Rldi1yb3l6aHUudXMuYXV0aDAuY29tLyIsInN1YiI6Imdvb2dsZS1vYXV0aDJ8MTE3NjE5OTkwOTA1MjU4NzcwMjgzIiwiYXVkIjpbImJvYXJkZ2FtZWZvcnVtIiwiaHR0cHM6Ly9kZXYtcm95emh1LnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE2NTE1NjA3NDMsImV4cCI6MTY1MTY0NzE0MywiYXpwIjoid1JKRWNCeTQ2Nk1ReDZWZVF6emVtMWtTWXMzQ3hwQ0ciLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOnBvc3RzIiwiZGVsZXRlOnJlcGx5IiwicG9zdDpwb3N0cyIsInBvc3Q6cmVwbHkiXX0.oevsn0Hv28USqla1NfZuA1THm9cV1_c5zW9t2cLaQDbj9_VKaq-R6ebvickiQwkhacrvMn2asFTo-rOBavSMFmU77FeoMTZjKAx_B9XHbrtyAYV73IGOB1wawayGT_URU7WUSFJ6WGU5VEnUDGmDanhjrYAaB4iq9RujSveX550GL_sOYdsUQ2sOK35URM4F2mOkhFmxaSvL7JlzO7Zi1syf5AmXa2YDFtQA4h5GA_-c5DNesi58v_xS0DIMBtYBj2Gt53gCtTrtAq3j1F__5c2GX54aX_CMYwBZO9s4Zsw-dOshAET2iRTpfBK6iXg4Oan59Y9xNMf6uT2rrwT38A"})
+        res = self.client().delete('/replies/1000', headers={'Authorization': "Bearer "+ADMINISTRATOR})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)

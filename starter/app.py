@@ -10,9 +10,9 @@ from jose import jwt
 from urllib.request import urlopen
 
 POSTS_PER_PAGE = 15
-AUTH0_DOMAIN = 'dev-royzhu.us.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'boardgameforum'
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
+ALGORITHMS = os.environ.get['ALGORITHMS']
+API_AUDIENCE = os.environ.get('API_AUDIENCE')
 
 def create_app(test_config=None):
 
@@ -135,6 +135,12 @@ def create_app(test_config=None):
 
             return wrapper
         return requires_auth_decorator
+
+    @app.route('/', methods=['GET'])
+    def index():
+        return jsonify(
+            {'message': 'Welcome to My boardgame forum API'}
+        )
 
     @app.after_request
     def after_request(response):
